@@ -125,6 +125,7 @@ Hardware decoding can be configured explicitly:
 tainuitech --hwdec=auto      # use hardware decoding if possible (default)
 tainuitech --hwdec=disabled  # software decoding
 tainuitech --hwdec=vaapi     # VA-API, Linux only
+tainuitech --hwdec=d3d11va   # D3D11VA, Windows only
 ```
 
 Hardware decoding is only supported when video playback is enabled and V4L2 is
@@ -138,6 +139,7 @@ The available hardware decoders are:
    (`va-driver-all` on Debian/Ubuntu). The prebuilt binary uses the libva
    installed on the system. Trilinear filtering (mipmaps) is not available for
    hardware frames.
+ - `d3d11va` (Windows only).
 
 With `--hwdec=auto`, if the hardware decoder cannot decode the stream, FFmpeg
 falls back to software decoding. It fails instead if a specific hardware decoder
