@@ -79,12 +79,14 @@ your device, you should not get more than 24 frames per second in tainuitech.
 ## Codec
 
 The video codec can be selected. The possible values are `h264` (default),
-`h265` and `av1`:
+`h265`, `av1`, `vp8` and `vp9`:
 
 ```bash
 tainuitech --video-codec=h264  # default
 tainuitech --video-codec=h265
 tainuitech --video-codec=av1
+tainuitech --video-codec=vp8
+tainuitech --video-codec=vp9
 ```
 
 H265 may provide better quality, but H264 should provide lower latency.
