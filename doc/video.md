@@ -114,6 +114,24 @@ tainuitech --video-codec=h264 --video-encoder=OMX.qcom.video.encoder.avc
 ```
 
 
+## Hardware decoding
+
+The video stream is decoded on the computer. By default, the first available
+hardware decoder is used, and software decoding is used otherwise.
+
+Hardware decoding can be configured explicitly:
+
+```bash
+tainuitech --hwdec=auto      # default
+tainuitech --hwdec=disabled  # software decoding
+```
+
+Hardware decoding is only supported when video playback is enabled and V4L2 is
+disabled.
+
+For now, only software decoding is available.
+
+
 ## Orientation
 
 The orientation may be applied at 3 different levels:
