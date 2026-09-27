@@ -27,6 +27,9 @@ tainuitech --otg
 tainuitech --otg -s 0123456789abcdef
 ```
 
+The serial may also be provided via the environment variable `ANDROID_SERIAL`
+(see [connection](connection.md#selection)).
+
 It is possible to disable keyboard or mouse:
 
 ```bash

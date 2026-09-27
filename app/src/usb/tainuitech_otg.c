@@ -77,6 +77,13 @@ tainuitech_otg(struct tainuitech_options *options) {
     struct tainuitech_otg *s = &tainuitech_otg;
 
     const char *serial = options->serial;
+    if (!serial) {
+        // No explicit selection, check $ANDROID_SERIAL
+        serial = getenv("ANDROID_SERIAL");
+        if (serial) {
+            LOGI("Using ANDROID_SERIAL: %s", serial);
+        }
+    }
 
     sc_sdl_set_hints(options->render_driver, options->disable_screensaver);
 
