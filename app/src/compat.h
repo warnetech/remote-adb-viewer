@@ -22,7 +22,7 @@
 //   av_stream_new_side_data(), and av_stream_get_side_data(). Side data fields
 //   from AVFormatContext.codecpar should be used from now on.
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(60, 15, 100)
-# define SCRCPY_LAVC_HAS_CODECPAR_CODEC_SIDEDATA
+# define TAINUITECH_LAVC_HAS_CODECPAR_CODEC_SIDEDATA
 #endif
 
 #ifndef HAVE_STRDUP

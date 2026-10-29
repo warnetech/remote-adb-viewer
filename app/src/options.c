@@ -2,7 +2,7 @@
 
 #include <stddef.h>
 
-const struct scrcpy_options scrcpy_options_default = {
+const struct tainuitech_options tainuitech_options_default = {
     .serial = NULL,
     .crop = NULL,
     .record_filename = NULL,

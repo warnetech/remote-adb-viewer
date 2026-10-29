@@ -10,9 +10,9 @@
 #include "cli.h"
 #include "events.h"
 #include "options.h"
-#include "scrcpy.h"
+#include "tainuitech.h"
 #ifdef HAVE_USB
-# include "usb/scrcpy_otg.h"
+# include "usb/tainuitech_otg.h"
 #endif
 #include "util/log.h"
 #include "util/net.h"
@@ -25,7 +25,7 @@
 #endif
 
 static int
-main_scrcpy(int argc, char *argv[]) {
+main_tainuitech(int argc, char *argv[]) {
 #ifdef _WIN32
     // disable buffering, we want logs immediately
     // even line buffering (setvbuf() with mode _IOLBF) is not sufficient
@@ -33,11 +33,11 @@ main_scrcpy(int argc, char *argv[]) {
     setbuf(stderr, NULL);
 #endif
 
-    printf("scrcpy " SCRCPY_VERSION
-           " <https://github.com/Genymobile/scrcpy>\n");
+    printf("tainuitech " TAINUITECH_VERSION
+           " <https://github.com/warnetech/remote-adb-viewer>\n");
 
-    struct scrcpy_cli_args args = {
-        .opts = scrcpy_options_default,
+    struct tainuitech_cli_args args = {
+        .opts = tainuitech_options_default,
         .help = false,
         .version = false,
         .pause_on_exit = SC_PAUSE_ON_EXIT_UNDEFINED,
@@ -47,12 +47,12 @@ main_scrcpy(int argc, char *argv[]) {
     args.opts.log_level = SC_LOG_LEVEL_DEBUG;
 #endif
 
-    enum scrcpy_exit_code ret;
+    enum tainuitech_exit_code ret;
 
     bool term_title_saved = false;
 
-    if (!scrcpy_parse_args(&args, argc, argv)) {
-        ret = SCRCPY_EXIT_FAILURE;
+    if (!tainuitech_parse_args(&args, argc, argv)) {
+        ret = TAINUITECH_EXIT_FAILURE;
         goto end;
     }
 
@@ -60,19 +60,19 @@ main_scrcpy(int argc, char *argv[]) {
 
     if (args.opts.update_terminal_title) {
         sc_term_save_title();
-        sc_term_set_title("scrcpy");
+        sc_term_set_title("tainuitech");
         term_title_saved = true;
     }
 
     if (args.help) {
-        scrcpy_print_usage(argv[0]);
-        ret = SCRCPY_EXIT_SUCCESS;
+        tainuitech_print_usage(argv[0]);
+        ret = TAINUITECH_EXIT_SUCCESS;
         goto end;
     }
 
     if (args.version) {
-        scrcpy_print_version();
-        ret = SCRCPY_EXIT_SUCCESS;
+        tainuitech_print_version();
+        ret = TAINUITECH_EXIT_SUCCESS;
         goto end;
     }
 
@@ -83,21 +83,21 @@ main_scrcpy(int argc, char *argv[]) {
 #endif
 
     if (!net_init()) {
-        ret = SCRCPY_EXIT_FAILURE;
+        ret = TAINUITECH_EXIT_FAILURE;
         goto end;
     }
 
     sc_log_configure();
 
     if (!sc_main_thread_init()) {
-        ret = SCRCPY_EXIT_FAILURE;
+        ret = TAINUITECH_EXIT_FAILURE;
         goto net_cleanup;
     }
 
 #ifdef HAVE_USB
-    ret = args.opts.otg ? scrcpy_otg(&args.opts) : scrcpy(&args.opts);
+    ret = args.opts.otg ? tainuitech_otg(&args.opts) : tainuitech(&args.opts);
 #else
-    ret = scrcpy(&args.opts);
+    ret = tainuitech(&args.opts);
 #endif
 
     sc_main_thread_destroy();
@@ -108,7 +108,7 @@ net_cleanup:
 end:
     if (args.pause_on_exit == SC_PAUSE_ON_EXIT_TRUE ||
             (args.pause_on_exit == SC_PAUSE_ON_EXIT_IF_ERROR &&
-                ret != SCRCPY_EXIT_SUCCESS)) {
+                ret != TAINUITECH_EXIT_SUCCESS)) {
         printf("Press Enter to continue...\n");
         getchar();
     }
@@ -124,7 +124,7 @@ end:
 int
 main(int argc, char *argv[]) {
 #ifndef _WIN32
-    return main_scrcpy(argc, argv);
+    return main_tainuitech(argc, argv);
 #else
     (void) argc;
     (void) argv;
@@ -132,14 +132,14 @@ main(int argc, char *argv[]) {
     wchar_t **wargv = CommandLineToArgvW(GetCommandLineW(), &wargc);
     if (!wargv) {
         LOG_OOM();
-        return SCRCPY_EXIT_FAILURE;
+        return TAINUITECH_EXIT_FAILURE;
     }
 
     char **argv_utf8 = malloc((wargc + 1) * sizeof(*argv_utf8));
     if (!argv_utf8) {
         LOG_OOM();
         LocalFree(wargv);
-        return SCRCPY_EXIT_FAILURE;
+        return TAINUITECH_EXIT_FAILURE;
     }
 
     argv_utf8[wargc] = NULL;
@@ -153,13 +153,13 @@ main(int argc, char *argv[]) {
             }
             LocalFree(wargv);
             free(argv_utf8);
-            return SCRCPY_EXIT_FAILURE;
+            return TAINUITECH_EXIT_FAILURE;
         }
     }
 
     LocalFree(wargv);
 
-    int ret = main_scrcpy(wargc, argv_utf8);
+    int ret = main_tainuitech(wargc, argv_utf8);
 
     for (int i = 0; i < wargc; ++i) {
         free(argv_utf8[i]);

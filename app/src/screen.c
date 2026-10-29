@@ -621,7 +621,7 @@ sc_screen_init(struct sc_screen *screen,
         goto error_destroy_texture;
     }
 
-    SDL_Surface *icon = sc_icon_load(SC_ICON_FILENAME_SCRCPY);
+    SDL_Surface *icon = sc_icon_load(SC_ICON_FILENAME_TAINUITECH);
     if (icon) {
         if (!SDL_SetWindowIcon(screen->window, icon)) {
             LOGW("Could not set window icon: %s", SDL_GetError());

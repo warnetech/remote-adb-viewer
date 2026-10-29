@@ -29,7 +29,7 @@ src = [
     'src/packet_merger.c',
     'src/receiver.c',
     'src/recorder.c',
-    'src/scrcpy.c',
+    'src/tainuitech.c',
     'src/screen.c',
     'src/sdl_hints.c',
     'src/server.c',
@@ -82,7 +82,7 @@ if host_machine.system() == 'windows'
         'src/util/command.c',
         'src/sys/win/file.c',
         'src/sys/win/process.c',
-        windows.compile_resources('scrcpy-windows.rc'),
+        windows.compile_resources('tainuitech-windows.rc'),
     ]
     feature_test_macros += [
         '-D_WIN32_WINNT=0x0600',
@@ -113,7 +113,7 @@ if usb_support
         'src/usb/gamepad_aoa.c',
         'src/usb/keyboard_aoa.c',
         'src/usb/mouse_aoa.c',
-        'src/usb/scrcpy_otg.c',
+        'src/usb/tainuitech_otg.c',
         'src/usb/usb.c',
     ]
 endif
@@ -163,12 +163,12 @@ conf.set('HAVE_SOCK_CLOEXEC', host_machine.system() != 'windows' and
                               cc.has_header_symbol('sys/socket.h', 'SOCK_CLOEXEC'))
 
 # the version, updated on release
-conf.set_quoted('SCRCPY_VERSION', meson.project_version())
+conf.set_quoted('TAINUITECH_VERSION', meson.project_version())
 
 # the prefix used during configuration (meson --prefix=PREFIX)
 conf.set_quoted('PREFIX', get_option('prefix'))
 
-# build a "portable" version (with scrcpy-server accessible from the same
+# build a "portable" version (with tainuitech-server accessible from the same
 # directory as the executable)
 conf.set('PORTABLE', get_option('portable'))
 
@@ -190,7 +190,7 @@ configure_file(configuration: conf, output: 'config.h')
 
 src_dir = include_directories('src')
 
-executable('scrcpy', src,
+executable('tainuitech', src,
            dependencies: dependencies,
            include_directories: src_dir,
            install: true,
@@ -199,22 +199,22 @@ executable('scrcpy', src,
 # <https://mesonbuild.com/Builtin-options.html#directories>
 datadir = get_option('datadir') # by default 'share'
 
-install_man('scrcpy.1')
-install_data('data/scrcpy.png',
+install_man('tainuitech.1')
+install_data('data/tainuitech.png',
              install_dir: datadir / 'icons/hicolor/256x256/apps')
 install_data('data/disconnected.png',
              install_dir: datadir / 'icons/hicolor/256x256/apps')
-install_data('data/zsh-completion/_scrcpy',
+install_data('data/zsh-completion/_tainuitech',
              install_dir: datadir / 'zsh/site-functions')
-install_data('data/bash-completion/scrcpy',
+install_data('data/bash-completion/tainuitech',
              install_dir: datadir / 'bash-completion/completions')
 
 # Desktop entry file for application launchers
 if host_machine.system() == 'linux'
-    # Install a launcher (ex: /usr/local/share/applications/scrcpy.desktop)
-    install_data('data/scrcpy.desktop',
+    # Install a launcher (ex: /usr/local/share/applications/tainuitech.desktop)
+    install_data('data/tainuitech.desktop',
                  install_dir: datadir / 'applications')
-    install_data('data/scrcpy-console.desktop',
+    install_data('data/tainuitech-console.desktop',
                  install_dir: datadir / 'applications')
 endif
 
@@ -299,6 +299,6 @@ endif
 
 if meson.version().version_compare('>= 0.58.0')
        devenv = environment()
-       devenv.set('SCRCPY_ICON_DIR', meson.current_source_dir() / 'data')
+       devenv.set('TAINUITECH_ICON_DIR', meson.current_source_dir() / 'data')
        meson.add_devenv(devenv)
 endif

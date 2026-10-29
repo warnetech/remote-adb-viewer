@@ -7,21 +7,21 @@
 
 static void test_command_with_spaces(void) {
     const char *const argv[] = {
-        "C:\\Program Files\\scrcpy\\adb",
+        "C:\\Program Files\\tainuitech\\adb",
         "-s",
         "serial with spaces",
         "push",
-        "E:\\some folder\\scrcpy-server",
-        "/data/local/tmp/scrcpy-server.jar",
+        "E:\\some folder\\tainuitech-server",
+        "/data/local/tmp/tainuitech-server.jar",
         NULL,
     };
     char *cmd = sc_command_serialize_windows(argv);
-    const char *expected = "\"C:\\Program Files\\scrcpy\\adb\" "
+    const char *expected = "\"C:\\Program Files\\tainuitech\\adb\" "
                            "\"-s\" "
                            "\"serial with spaces\" "
                            "\"push\" "
-                           "\"E:\\some folder\\scrcpy-server\" "
-                           "\"/data/local/tmp/scrcpy-server.jar\"";
+                           "\"E:\\some folder\\tainuitech-server\" "
+                           "\"/data/local/tmp/tainuitech-server.jar\"";
 
     assert(!strcmp(expected, cmd));
     free(cmd);

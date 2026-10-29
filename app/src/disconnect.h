@@ -26,7 +26,7 @@ struct sc_disconnect_callbacks {
     void (*on_icon_loaded)(struct sc_disconnect *d, SDL_Surface *icon,
                            void *userdata);
 
-    // Called when the timeout expired (the scrcpy window must be closed)
+    // Called when the timeout expired (the tainuitech window must be closed)
     void (*on_timeout)(struct sc_disconnect *d, void *userdata);
 };
 

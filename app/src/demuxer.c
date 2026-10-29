@@ -359,7 +359,7 @@ bool
 sc_demuxer_start(struct sc_demuxer *demuxer) {
     LOGD("Demuxer '%s': starting thread", demuxer->name);
 
-    bool ok = sc_thread_create(&demuxer->thread, run_demuxer, "scrcpy-demuxer",
+    bool ok = sc_thread_create(&demuxer->thread, run_demuxer, "tt-demuxer",
                                demuxer);
     if (!ok) {
         LOGE("Demuxer '%s': could not start thread", demuxer->name);

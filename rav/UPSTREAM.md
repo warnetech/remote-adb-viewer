@@ -1,26 +1,25 @@
 # Staying in sync with upstream scrcpy
 
-This repo is a fork of [Genymobile/scrcpy](https://github.com/Genymobile/scrcpy) (`dev` branch). It includes [PR #7019](https://github.com/Genymobile/scrcpy/pull/7019) (power on the device for a new virtual display). RAV's own code lives under `rav/` so upstream merges stay conflict-free.
+TainuiTech is a renamed fork of [Genymobile/scrcpy](https://github.com/Genymobile/scrcpy) (`dev` branch). It includes [PR #7019](https://github.com/Genymobile/scrcpy/pull/7019) (power on the device for a new virtual display).
 
-## One-time setup (per clone)
-
-```bash
-git remote add upstream https://github.com/Genymobile/scrcpy.git
-```
-
-The sync script does this for you if the remote is missing.
+Because every file, path and identifier was renamed (`scrcpy` → `tainuitech`, `com.genymobile.scrcpy` → `com.tainuitech`), upstream commits can't be merged directly. Instead they are **ported**: each upstream patch is rewritten with the same rules as the original rename (`rav/scripts/rebrand.py`), then applied with `git am -3`.
 
 ## Commands
 
 ```bash
-rav/scripts/sync-upstream.sh            # list upstream commits we don't have yet
-rav/scripts/sync-upstream.sh --merge    # merge upstream/dev into the current branch
-rav/scripts/sync-upstream.sh --pr 7019  # merge the latest revision of an upstream PR
+rav/scripts/port-upstream.sh            # list upstream commits not yet ported
+rav/scripts/port-upstream.sh --apply    # port them onto the current branch
+rav/scripts/port-upstream.sh --pr 7019  # port the commits of an upstream PR
 ```
 
-Then push as usual. The script always **merges** rather than rebasing, so pushed history is never rewritten.
+`rav/UPSTREAM_BASE` holds the last upstream `dev` commit that was ported. `--apply` updates it.
+
+## When a patch doesn't apply
+`git am` stops on the failing commit. Resolve the conflict, `git add` the files, then `git am --continue`. Use `git am --skip` to drop a commit, for example when upstream merges PR #7019, which is already here. To give up, run `git am --abort`.
+
+Expect conflicts on upstream release commits ("Update links to X"): they edit download links and install sections that TainuiTech removed. Keep our version of those sections and update only the version in the README title.
 
 ## Notes
-- Tags are not fetched (`--no-tags`). Upstream release tags aren't needed here.
-- If PR #7019 is merged upstream, `--merge` brings in the final version, and git resolves the duplicate change automatically in most cases.
-- License: scrcpy is Apache-2.0. Keep `LICENSE` and upstream copyright notices intact.
+- URLs in patches are not rewritten, so links to upstream issues stay valid.
+- Thread names use the short `tt-` prefix, because names are limited to 15 characters.
+- License: scrcpy is Apache-2.0. Keep `LICENSE`, `NOTICE` and upstream copyright notices intact.

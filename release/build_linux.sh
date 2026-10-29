@@ -40,9 +40,9 @@ ninja -C "$LINUX_BUILD_DIR"
 
 # Group intermediate outputs into a 'dist' directory
 mkdir -p "$LINUX_BUILD_DIR/dist"
-cp "$LINUX_BUILD_DIR"/app/scrcpy "$LINUX_BUILD_DIR/dist/"
-cp app/data/scrcpy.png "$LINUX_BUILD_DIR/dist/"
+cp "$LINUX_BUILD_DIR"/app/tainuitech "$LINUX_BUILD_DIR/dist/"
+cp app/data/tainuitech.png "$LINUX_BUILD_DIR/dist/"
 cp app/data/disconnected.png "$LINUX_BUILD_DIR/dist/"
-cp app/scrcpy.1 "$LINUX_BUILD_DIR/dist/"
+cp app/tainuitech.1 "$LINUX_BUILD_DIR/dist/"
 cp LICENSE "$LINUX_BUILD_DIR/dist"
 cp -r "$ADB_INSTALL_DIR"/. "$LINUX_BUILD_DIR/dist/"

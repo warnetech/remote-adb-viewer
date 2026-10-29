@@ -6,7 +6,7 @@
 
 ## 1. Summary
 
-Remote ADB Viewer (RAV) lets you **see and control an Android phone from somewhere else**: another computer first, then any browser, then AI agents. It is built on a fork of [scrcpy](https://github.com/Genymobile/scrcpy) (v4.1, `dev` branch), which already includes upstream PR #7019 so virtual displays work on Android 17.
+Remote ADB Viewer (RAV) lets you **see and control an Android phone from somewhere else**: another computer first, then any browser, then AI agents. It is built on **TainuiTech**, this repo: a fork of [scrcpy](https://github.com/Genymobile/scrcpy) (v4.1, `dev` branch) renamed throughout, which already includes upstream PR #7019 so virtual displays work on Android 17. Below, "scrcpy" means the upstream project and "TainuiTech" means our fork.
 
 We don't build a streaming engine. scrcpy already has excellent ones. RAV adds what scrcpy leaves to the user: **getting connected from far away, safely, with one command**. Later phases add a browser front end and an agent/MCP interface.
 
@@ -92,7 +92,7 @@ The goal was to reuse rather than rebuild. Ratings are for **fit with RAV**.
 - G1: Start a remote view/control session with one command, in under 10 seconds once set up.
 - G2: When something fails, say exactly which link failed (`rav doctor`).
 - G3: Never expose ADB to the public internet.
-- G4: Stay close to upstream scrcpy so updates are a merge, not a port.
+- G4: Keep upstream scrcpy fixes flowing in through a scripted, repeatable port (rename rules applied to upstream patches).
 
 **Non-goals (for now)**
 - Building our own video codec, streaming server or Android APK.
@@ -106,20 +106,21 @@ The goal was to reuse rather than rebuild. Ratings are for **fit with RAV**.
 
 ### Phase 0: Foundation ✅ done
 - scrcpy v4.1 (`dev`) plus PR #7019 forked into this repo, with full history.
-- Upstream sync script: `rav/scripts/sync-upstream.sh` (see `rav/UPSTREAM.md`).
+- Full rename to TainuiTech: binaries `tainuitech` / `tainuitech-server`, Java package `com.tainuitech`, attribution in `NOTICE`.
+- Upstream port tooling: `rav/scripts/port-upstream.sh` with `rav/scripts/rebrand.py` (see `rav/UPSTREAM.md`).
 
 ### Phase 1: Quick win, the `rav` CLI (about 2–4 days)
 
 **Outcome:** from your laptop anywhere, `rav view pixel` opens a working, low-latency window on the phone without touching its physical screen.
 
-Python 3.11+ CLI (`rav/`, packaged with `uv`/`pipx`) that wraps **stock scrcpy** and uses **adbutils**.
+Python 3.11+ CLI (`rav/`, packaged with `uv`/`pipx`) that wraps the **TainuiTech** binary and uses **adbutils**.
 
 | ID | Requirement | Priority |
 |---|---|---|
 | P1-1 | `rav add <name> --tailscale <ip:port>` / `--ssh <user@host>` / `--usb <serial>` saves a device profile in `~/.config/rav/devices.toml`. | Must |
-| P1-2 | `rav view <name>` connects (Tailscale: `adb connect`; SSH: opens the tunnel the way `doc/tunnels.md` describes), **wakes the device first** (`KEYCODE_WAKEUP`, the Android 17 workaround from PR #7019 that also works on stock scrcpy), then runs scrcpy with the right preset. | Must |
+| P1-2 | `rav view <name>` connects (Tailscale: `adb connect`; SSH: opens the tunnel the way `doc/tunnels.md` describes), **wakes the device first** (`KEYCODE_WAKEUP`, the Android 17 workaround from PR #7019, which also works on builds without it), then runs `tainuitech` with the right preset. | Must |
 | P1-3 | Presets: `--profile lan` (high bitrate) and `--profile wan` (`-b 2M --max-size 1024 --max-fps 30`, H.265 if supported), plus `--headless` (`--new-display --turn-screen-off --keep-active`). | Must |
-| P1-4 | `rav doctor <name>` checks each link in order: adb binary/version → network reachability → `adb devices` state → authorization → Android version → screen/wakefulness (`dumpsys power`) → scrcpy version. It prints pass/fail with a fix hint for each. | Must |
+| P1-4 | `rav doctor <name>` checks each link in order: adb binary/version → network reachability → `adb devices` state → authorization → Android version → screen/wakefulness (`dumpsys power`) → TainuiTech version. It prints pass/fail with a fix hint for each. | Must |
 | P1-5 | `rav list` shows saved devices and live status. | Should |
 | P1-6 | `rav shot <name>` takes a quick screenshot to a file (adbutils). | Could |
 | P1-7 | A README section: "Remote phone in 5 minutes with Tailscale". | Must |
@@ -135,7 +136,7 @@ Python 3.11+ CLI (`rav/`, packaged with `uv`/`pipx`) that wraps **stock scrcpy**
 
 **Outcome:** open a URL from any Chromium browser to view and control the phone. Nothing to install on the viewing machine.
 
-- A small Node/TypeScript server next to the phone (or its USB host) using **Tango** (`@yume-chan/adb`, `@yume-chan/scrcpy`) and pushing the **scrcpy server built from this fork**.
+- A small Node/TypeScript server next to the phone (or its USB host) using **Tango** (`@yume-chan/adb`, `@yume-chan/scrcpy`) and pushing the **TainuiTech server built from this fork**. Tango assumes upstream names (`com.genymobile.scrcpy.Server`, socket `scrcpy_<id>`), so the client needs those two values made configurable or patched (see Risks).
 - Browser page: video (WebCodecs), touch/mouse/keyboard, rotate, back/home/recents, clipboard.
 - Access only through **Tailscale** or **Cloudflare Tunnel + Access** (login wall). No unauthenticated port.
 - Spike first (1 day): run ws-scrcpy to compare UX and latency, then commit to Tango.
@@ -163,7 +164,7 @@ Python 3.11+ CLI (`rav/`, packaged with `uv`/`pipx`) that wraps **stock scrcpy**
  Viewer (laptop / browser)                    Phone-side host (or phone over Wi-Fi)
  ┌────────────────────────┐   Tailscale /     ┌──────────────────────────────┐
  │ Phase 1: rav CLI       │   SSH tunnel      │ adb server                   │
- │   └─ scrcpy (native)   │◀────────────────▶ │   └─ scrcpy-server (fork)    │──USB/Wi-Fi──▶ Android
+ │   └─ tainuitech        │◀────────────────▶ │   └─ tainuitech-server       │──USB/Wi-Fi──▶ Android
  │ Phase 2: browser       │   HTTPS via       │ Phase 2: Tango Node server   │
  │   └─ WebCodecs viewer  │◀─ CF Access ────▶ │   (WebSocket video + input)  │
  └────────────────────────┘                   └──────────────────────────────┘
@@ -175,11 +176,12 @@ Python 3.11+ CLI (`rav/`, packaged with `uv`/`pipx`) that wraps **stock scrcpy**
 
 | Risk | Mitigation |
 |---|---|
-| PR #7019 changes or is rejected upstream | `rav view` also sends its own wake key event, so we don't depend on the PR. `sync-upstream.sh --pr 7019` picks up revisions. |
+| PR #7019 changes or is rejected upstream | `rav view` also sends its own wake key event, so we don't depend on the PR. `port-upstream.sh --pr 7019` picks up revisions. |
 | Android doze freezes virtual display after about 30 s | `--keep-active` in the headless preset; documented. |
 | WAN latency or bandwidth | WAN preset; WebRTC in Phase 3. |
 | Security: ADB equals full device control | Tailscale/SSH only; Cloudflare Access in front of the web UI; never bind ADB publicly; agent guardrails in Phase 4. |
-| Fork drift from upstream | Merge `upstream/dev` regularly (59 commits behind today; merges cleanly). Keep RAV code in `rav/`, not in scrcpy's sources. |
+| Fork drift from upstream (the full rename means no direct merges) | Port regularly with `port-upstream.sh --apply`, which rewrites upstream patches using the rename rules (59 commits pending today). Keep RAV code in `rav/`. |
+| Third-party scrcpy clients (Tango, ws-scrcpy, Python clients) expect upstream server names | Make the server class and socket prefix configurable in the Phase 2 client (a small Tango patch or wrapper), or ship an upstream-named server build for web use only. Decide in the Phase 2 spike. |
 | Tango is Chromium-only | Acceptable for a personal tool. Note it in the docs. |
 
 ---

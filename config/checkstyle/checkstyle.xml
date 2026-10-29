@@ -72,7 +72,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="UnusedImports" />
     <module name="CustomImportOrder">
         <property name="thirdPartyPackageRegExp" value=".*"/>
-        <property name="specialImportsRegExp" value="com.genymobile"/>
+        <property name="specialImportsRegExp" value="com.tainuitech"/>
         <property name="separateLineBetweenGroups" value="true"/>
         <property name="customImportOrderRules" value="SPECIAL_IMPORTS###THIRD_PARTY_PACKAGE###STANDARD_JAVA_PACKAGE###STATIC"/>
     </module>

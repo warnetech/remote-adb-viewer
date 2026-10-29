@@ -28,7 +28,7 @@
  * of samples present in the buffer) around a target value. If this target
  * buffering is too low, then buffer underrun will occur frequently. If it is
  * too high, then latency will become unacceptable. This target value is
- * configured using the scrcpy option --audio-buffer.
+ * configured using the tainuitech option --audio-buffer.
  *
  * The regulator cannot adjust the sample input rate (it receives samples
  * produced in real-time) or the sample output rate (it must provide samples as

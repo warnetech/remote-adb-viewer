@@ -18,13 +18,13 @@
 #include "util/file.h"
 #include "util/log.h"
 
-#define SCRCPY_DEFAULT_ICON_DIR PREFIX "/share/icons/hicolor/256x256/apps"
+#define TAINUITECH_DEFAULT_ICON_DIR PREFIX "/share/icons/hicolor/256x256/apps"
 
 static char *
 get_icon_path(const char *filename) {
     char *icon_path;
 
-    char *icon_dir = sc_get_env("SCRCPY_ICON_DIR");
+    char *icon_dir = sc_get_env("TAINUITECH_ICON_DIR");
     if (icon_dir) {
         // if the envvar is set, use it
         icon_path = sc_file_build_path(icon_dir, filename);
@@ -33,12 +33,12 @@ get_icon_path(const char *filename) {
             LOG_OOM();
             return NULL;
         }
-        LOGD("Using icon from SCRCPY_ICON_DIR: %s", icon_path);
+        LOGD("Using icon from TAINUITECH_ICON_DIR: %s", icon_path);
         return icon_path;
     }
 
 #ifndef PORTABLE
-    icon_path = sc_file_build_path(SCRCPY_DEFAULT_ICON_DIR, filename);
+    icon_path = sc_file_build_path(TAINUITECH_DEFAULT_ICON_DIR, filename);
     if (!icon_path) {
         LOG_OOM();
         return NULL;

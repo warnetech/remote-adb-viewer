@@ -13,7 +13,7 @@
 #include <SDL3/SDL_version.h>
 
 void
-scrcpy_print_version(void) {
+tainuitech_print_version(void) {
     printf("\nDependencies (compiled / linked):\n");
 
     int sdl = SDL_GetVersion();

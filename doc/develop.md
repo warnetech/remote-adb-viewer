@@ -1,10 +1,10 @@
-# scrcpy for developers
+# tainuitech for developers
 
 ## Overview
 
 This application is composed of two parts:
- - the server (`scrcpy-server`), to be executed on the device,
- - the client (the `scrcpy` binary), executed on the host computer.
+ - the server (`tainuitech-server`), to be executed on the device,
+ - the client (the `tainuitech` binary), executed on the host computer.
 
 The client is responsible to push the server to the device and start its
 execution.
@@ -14,7 +14,7 @@ video, audio and controls. Any of them may be disabled (but not all), so
 there are 1, 2 or 3 socket(s).
 
 The server initially sends the device name on the first socket (it is used for
-the scrcpy window title), then each socket is used for its own purpose. All
+the tainuitech window title), then each socket is used for its own purpose. All
 reads and writes are performed from a dedicated thread for each socket, both on
 the client and on the server.
 
@@ -29,7 +29,7 @@ Similarly, if audio is enabled, then the server sends a raw audio stream (OPUS
 by default) of the device audio output (or the microphone if
 `--audio-source=mic` is specified), with some additional headers for each
 packet. The client decodes the stream, attempts to keep a minimal latency by
-maintaining an average buffering. The [blog post][scrcpy2] of the scrcpy 2.0
+maintaining an average buffering. The [blog post][tainuitech2] of the tainuitech 2.0
 release gives more details about the audio feature.
 
 If control is enabled, then the client captures relevant keyboard and mouse
@@ -38,7 +38,7 @@ is the only socket which is used in both direction: input events are sent from
 the client to the device, and when the device clipboard changes, the new content
 is sent from the device to the client to support seamless copy-paste.
 
-[scrcpy2]: https://blog.rom1v.com/2023/03/scrcpy-2-0-with-audio/
+[tainuitech2]: https://blog.rom1v.com/2023/03/scrcpy-2-0-with-audio/
 
 Note that the client-server roles are expressed at the application level:
 
@@ -84,7 +84,7 @@ application may not replace the server just before the client executes it._
 Instead of a raw _dex_ file, `app_process` accepts a _jar_ containing
 `classes.dex` (e.g. an [APK]). For simplicity, and to benefit from the gradle
 build system, the server is built to an (unsigned) APK (renamed to
-`scrcpy-server.jar`).
+`tainuitech-server.jar`).
 
 [dex]: https://en.wikipedia.org/wiki/Dalvik_(software)
 [apk]: https://en.wikipedia.org/wiki/Android_application_package
@@ -111,12 +111,12 @@ The server is started by the client basically by executing the following
 commands:
 
 ```bash
-adb push scrcpy-server /data/local/tmp/scrcpy-server.jar
-adb forward tcp:27183 localabstract:scrcpy
-adb shell CLASSPATH=/data/local/tmp/scrcpy-server.jar app_process / com.genymobile.scrcpy.Server 4.0
+adb push tainuitech-server /data/local/tmp/tainuitech-server.jar
+adb forward tcp:27183 localabstract:tainuitech
+adb shell CLASSPATH=/data/local/tmp/tainuitech-server.jar app_process / com.tainuitech.Server 4.0
 ```
 
-The first argument (`4.0` in the example) is the client scrcpy version. The
+The first argument (`4.0` in the example) is the client tainuitech version. The
 server fails if the client and the server do not have the exact same version.
 The protocol between the client and the server may change from version to
 version (see [protocol](#protocol) below), and there is no backward or forward
@@ -131,12 +131,12 @@ found in the [server][server-options] and [client][client-options] code.
 [server-options]: https://github.com/Genymobile/scrcpy/blob/19057b48afb9d5388bd143c6f885008f48055552/server/src/main/java/com/genymobile/scrcpy/Options.java#L339
 [client-options]: https://github.com/Genymobile/scrcpy/blob/19057b48afb9d5388bd143c6f885008f48055552/app/src/server.c#L265
 
-For example, if we execute `scrcpy -m1920 --no-audio`, then the server
+For example, if we execute `tainuitech -m1920 --no-audio`, then the server
 execution will look like this:
 
 ```bash
 # scid is a random number to identify different clients running on the same device
-adb shell CLASSPATH=/data/local/tmp/scrcpy-server.jar app_process / com.genymobile.scrcpy.Server 4.0 scid=12345678 log_level=info audio=false max_size=1920
+adb shell CLASSPATH=/data/local/tmp/tainuitech-server.jar app_process / com.tainuitech.Server 4.0 scid=12345678 log_level=info audio=false max_size=1920
 ```
 
 ### Components
@@ -189,7 +189,7 @@ Both problems are [solved][repeat] by the flag
 Similarly, the audio is [captured] using an [`AudioRecord`], and [encoded] using
 the [`MediaCodec`] asynchronous API.
 
-More details are available on the [blog post][scrcpy2] introducing the audio feature.
+More details are available on the [blog post][tainuitech2] introducing the audio feature.
 
 [captured]: https://github.com/Genymobile/scrcpy/blob/19057b48afb9d5388bd143c6f885008f48055552/server/src/main/java/com/genymobile/scrcpy/audio/AudioDirectCapture.java
 [encoded]: https://github.com/Genymobile/scrcpy/blob/19057b48afb9d5388bd143c6f885008f48055552/server/src/main/java/com/genymobile/scrcpy/audio/AudioEncoder.java
@@ -231,12 +231,12 @@ The video and audio streams are decoded by [FFmpeg].
 
 The client parses the command line arguments, then [runs one of two code
 paths][run]:
- - scrcpy in "normal" mode ([`scrcpy.c`])
- - scrcpy in [OTG mode](otg.md) ([`scrcpy_otg.c`])
+ - tainuitech in "normal" mode ([`tainuitech.c`])
+ - tainuitech in [OTG mode](otg.md) ([`tainuitech_otg.c`])
 
 [run]: https://github.com/Genymobile/scrcpy/blob/19057b48afb9d5388bd143c6f885008f48055552/app/src/main.c#L93
-[`scrcpy.c`]: https://github.com/Genymobile/scrcpy/blob/19057b48afb9d5388bd143c6f885008f48055552/app/src/scrcpy.c#L305-L306
-[`scrcpy_otg.c`]: https://github.com/Genymobile/scrcpy/blob/19057b48afb9d5388bd143c6f885008f48055552/app/src/usb/scrcpy_otg.c#L61-L62
+[`tainuitech.c`]: https://github.com/Genymobile/scrcpy/blob/19057b48afb9d5388bd143c6f885008f48055552/app/src/scrcpy.c#L305-L306
+[`tainuitech_otg.c`]: https://github.com/Genymobile/scrcpy/blob/19057b48afb9d5388bd143c6f885008f48055552/app/src/usb/scrcpy_otg.c#L61-L62
 
 In the remaining of this document, we assume that the "normal" mode is used
 (read the code for the OTG mode).
@@ -249,7 +249,7 @@ On startup, the client:
 
 ### Video and audio streams
 
-Depending on the arguments passed to `scrcpy`, several components may be used.
+Depending on the arguments passed to `tainuitech`, several components may be used.
 Here is an overview of the video and audio components:
 
 ```
@@ -275,7 +275,7 @@ single file). The packets are encoded on the device (by `MediaCodec`), but when
 recording, they are _muxed_ (asynchronously) into a container (MKV or MP4) on
 the client side.
 
-Video frames are sent to the screen/display to be rendered in the scrcpy window.
+Video frames are sent to the screen/display to be rendered in the tainuitech window.
 They may also be sent to a [V4L2 sink](v4l2.md).
 
 Audio "frames" (an array of decoded samples) are sent to the audio player.
@@ -301,7 +301,7 @@ number of sockets, the order in which the sockets must be opened, the data
 format on the wire…) from version to version. A client must always be run with a
 matching server version.
 
-This section documents the current protocol in scrcpy 4.0.
+This section documents the current protocol in tainuitech 4.0.
 
 ### Connection
 
@@ -309,15 +309,15 @@ Firstly, the client sets up an adb tunnel:
 
 ```bash
 # By default, a reverse redirection: the computer listens, the device connects
-adb reverse localabstract:scrcpy_<SCID> tcp:27183
+adb reverse localabstract:tainuitech_<SCID> tcp:27183
 
 # As a fallback (or if --force-adb forward is set), a forward redirection:
 # the device listens, the computer connects
-adb forward tcp:27183 localabstract:scrcpy_<SCID>
+adb forward tcp:27183 localabstract:tainuitech_<SCID>
 ```
 
 (`<SCID>` is a 31-bit random number, so that it does not fail when several
-scrcpy instances start "at the same time" for the same device.)
+tainuitech instances start "at the same time" for the same device.)
 
 Then, up to 3 sockets are opened, in that order:
  - a _video_ socket
@@ -442,7 +442,7 @@ The only documentation for this protocol is the set of unit tests on both sides:
 
 ## Standalone server
 
-Although the server is designed to work for the scrcpy client, it can be used
+Although the server is designed to work for the tainuitech client, it can be used
 with any client which uses the same protocol.
 
 For simplicity, some [server-specific options] have been added to produce raw
@@ -459,10 +459,10 @@ streams easily:
 Concretely, here is how to expose a raw H.264 stream on a TCP socket:
 
 ```bash
-adb push scrcpy-server-v4.0 /data/local/tmp/scrcpy-server-manual.jar
-adb forward tcp:1234 localabstract:scrcpy
-adb shell CLASSPATH=/data/local/tmp/scrcpy-server-manual.jar \
-    app_process / com.genymobile.scrcpy.Server 4.0 \
+adb push tainuitech-server-v4.0 /data/local/tmp/tainuitech-server-manual.jar
+adb forward tcp:1234 localabstract:tainuitech
+adb shell CLASSPATH=/data/local/tmp/tainuitech-server-manual.jar \
+    app_process / com.tainuitech.Server 4.0 \
     tunnel_forward=true audio=false control=false cleanup=false \
     raw_stream=true max_size=1920
 ```
@@ -498,7 +498,7 @@ meson setup x -Dserver_debugger=true
 meson configure x -Dserver_debugger=true
 ```
 
-Then recompile, and run scrcpy.
+Then recompile, and run tainuitech.
 
 For Android < 11, it will start a debugger on port 5005 on the device and wait:
 Redirect that port to the computer:

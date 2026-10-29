@@ -2,20 +2,20 @@
 set -e
 
 BUILDDIR=build-auto
-PREBUILT_SERVER_URL=https://github.com/Genymobile/scrcpy/releases/download/v4.1/scrcpy-server-v4.1
-PREBUILT_SERVER_SHA256=deacb991ed2509715160ffdc7907e47b4160eb30d1566217e9047fd5b8850cae
 
-echo "[scrcpy] Downloading prebuilt server..."
-wget "$PREBUILT_SERVER_URL" -O scrcpy-server
-echo "[scrcpy] Verifying prebuilt server..."
-echo "$PREBUILT_SERVER_SHA256  scrcpy-server" | sha256sum --check
+# TainuiTech has no prebuilt server release: the upstream scrcpy server is not
+# compatible, so the server is built from source (requires Java and the Android
+# SDK, with ANDROID_SDK_ROOT set).
+if [[ -z "$ANDROID_SDK_ROOT" && -z "$ANDROID_HOME" ]]; then
+    echo "[tainuitech] ANDROID_SDK_ROOT is not set (needed to build the server)" >&2
+    exit 1
+fi
 
-echo "[scrcpy] Building client..."
+echo "[tainuitech] Building client and server..."
 rm -rf "$BUILDDIR"
-meson setup "$BUILDDIR" --buildtype=release --strip -Db_lto=true \
-    -Dprebuilt_server=scrcpy-server
+meson setup "$BUILDDIR" --buildtype=release --strip -Db_lto=true
 cd "$BUILDDIR"
 ninja
 
-echo "[scrcpy] Installing (sudo)..."
+echo "[tainuitech] Installing (sudo)..."
 sudo ninja install

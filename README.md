@@ -1,13 +1,13 @@
-> [!WARNING]
-> **This GitHub repo (<https://github.com/Genymobile/scrcpy>) is the only official
-source for the project. Do not download releases from random websites, even if
-their name contains `scrcpy`.**
+# TainuiTech (v4.1)
 
-# scrcpy (v4.1)
+<img src="app/data/tainuitech.svg" width="128" height="128" alt="TainuiTech" align="right" />
 
-<img src="app/data/scrcpy.svg" width="128" height="128" alt="scrcpy" align="right" />
-
-_pronounced "**scr**een **c**o**py**"_
+> [!NOTE]
+> TainuiTech is a fork of [scrcpy](https://github.com/Genymobile/scrcpy) by
+> Genymobile and Romain Vimont, renamed and maintained at <https://github.com/warnetech/remote-adb-viewer>. See
+> [NOTICE](NOTICE) for attribution. It is not affiliated with or endorsed by
+> the scrcpy project, so please report TainuiTech problems here rather than
+> upstream.
 
 This application mirrors Android devices (video and audio) connected via USB or
 [TCP/IP](doc/connection.md#tcpip-wireless) and allows control using the
@@ -73,7 +73,7 @@ option is set.
 
 [control]: https://github.com/Genymobile/scrcpy/issues/70#issuecomment-373286323
 
-Note that USB debugging is not required to run scrcpy in [OTG mode](doc/otg.md).
+Note that USB debugging is not required to run tainuitech in [OTG mode](doc/otg.md).
 
 
 ## Get the app
@@ -86,7 +86,7 @@ Note that USB debugging is not required to run scrcpy in [OTG mode](doc/otg.md).
 ## Must-know tips
 
  - [Reducing resolution](doc/video.md#size) may greatly improve performance
-   (`scrcpy -m1024`)
+   (`tainuitech -m1024`)
  - [_Right-click_](doc/mouse.md#mouse-bindings) triggers `BACK`
  - [_Middle-click_](doc/mouse.md#mouse-bindings) triggers `HOME`
  - <kbd>Alt</kbd>+<kbd>f</kbd> toggles [fullscreen](doc/window.md#fullscreen)
@@ -103,49 +103,49 @@ Here are just some common examples.
    a physical keyboard:
 
     ```bash
-    scrcpy --video-codec=h265 --max-size=1920 --max-fps=60 --no-audio --keyboard=uhid
-    scrcpy --video-codec=h265 -m1920 --max-fps=60 --no-audio -K  # short version
+    tainuitech --video-codec=h265 --max-size=1920 --max-fps=60 --no-audio --keyboard=uhid
+    tainuitech --video-codec=h265 -m1920 --max-fps=60 --no-audio -K  # short version
     ```
 
  - Start VLC in a new virtual display (separate from the device display):
 
     ```bash
-    scrcpy --new-display=1920x1080 --start-app=org.videolan.vlc
+    tainuitech --new-display=1920x1080 --start-app=org.videolan.vlc
     ```
 
  - Start VLC in a new _flex_ display using H.265 with a bitrate of 16 Mbps,
    while keeping the display active so it does not turn off:
 
     ```bash
-    scrcpy --new-display -x --keep-active --start-app=org.videolan.vlc --video-codec=h265 -b16M
+    tainuitech --new-display -x --keep-active --start-app=org.videolan.vlc --video-codec=h265 -b16M
     ```
 
  - Record the device camera in H.265 at 1920x1080 (and microphone) to an MP4
    file:
 
     ```bash
-    scrcpy --video-source=camera --video-codec=h265 --camera-size=1920x1080 --record=file.mp4
+    tainuitech --video-source=camera --video-codec=h265 --camera-size=1920x1080 --record=file.mp4
     ```
 
  - Capture the device front camera and expose it as a webcam on the computer (on
    Linux):
 
     ```bash
-    scrcpy --video-source=camera --camera-size=1920x1080 --camera-facing=front --v4l2-sink=/dev/video2 --no-playback
+    tainuitech --video-source=camera --camera-size=1920x1080 --camera-facing=front --v4l2-sink=/dev/video2 --no-playback
     ```
 
  - Control the device without mirroring by simulating a physical keyboard and
    mouse (USB debugging not required):
 
     ```bash
-    scrcpy --otg
+    tainuitech --otg
     ```
 
  - Control the device using gamepads plugged into the computer:
 
     ```bash
-    scrcpy --gamepad=uhid
-    scrcpy -G  # short version
+    tainuitech --gamepad=uhid
+    tainuitech -G  # short version
     ```
 
 ## User documentation
@@ -184,13 +184,15 @@ documented in the following pages:
 
 ## Articles
 
+Articles about upstream scrcpy, which TainuiTech is based on:
+
 - [Introducing scrcpy][article-intro]
-- [Scrcpy now works wirelessly][article-tcpip]
-- [Scrcpy 2.0, with audio][article-scrcpy2]
+- [scrcpy now works wirelessly][article-tcpip]
+- [scrcpy 2.0, with audio][article-tainuitech2]
 
 [article-intro]: https://blog.rom1v.com/2018/03/introducing-scrcpy/
 [article-tcpip]: https://www.genymotion.com/blog/open-source-project-scrcpy-now-works-wirelessly/
-[article-scrcpy2]: https://blog.rom1v.com/2023/03/scrcpy-2-0-with-audio/
+[article-tainuitech2]: https://blog.rom1v.com/2023/03/scrcpy-2-0-with-audio/
 
 ## Contact
 
@@ -199,21 +201,19 @@ You can open an [issue] for bug reports, feature requests or general questions.
 For bug reports, please read the [FAQ](FAQ.md) first, you might find a solution
 to your problem immediately.
 
-[issue]: https://github.com/Genymobile/scrcpy/issues
+[issue]: https://github.com/warnetech/remote-adb-viewer/issues
 
-You can also use:
-
- - Reddit: [`r/scrcpy`](https://www.reddit.com/r/scrcpy)
- - BlueSky: [`@scrcpy.bsky.social`](https://bsky.app/profile/scrcpy.bsky.social)
- - Twitter: [`@scrcpy_app`](https://twitter.com/scrcpy_app)
+For general questions about the underlying scrcpy engine, the upstream
+community is on Reddit ([`r/scrcpy`](https://www.reddit.com/r/scrcpy)),
+BlueSky ([`@scrcpy.bsky.social`](https://bsky.app/profile/scrcpy.bsky.social))
+and Twitter ([`@scrcpy_app`](https://twitter.com/scrcpy_app)).
 
 
 ## Donate
 
-I'm [@rom1v](https://github.com/rom1v), the author and maintainer of _scrcpy_.
-
-If you appreciate this application, you can [support my open source
-work][donate]:
+TainuiTech is built on scrcpy, written and maintained by
+[@rom1v](https://github.com/rom1v). If you appreciate it, you can [support his
+open source work][donate]:
  - [GitHub Sponsors](https://github.com/sponsors/rom1v)
  - [Liberapay](https://liberapay.com/rom1v/)
  - [PayPal](https://paypal.me/rom2v)

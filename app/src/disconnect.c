@@ -52,7 +52,7 @@ sc_disconnect_start(struct sc_disconnect *d, sc_tick deadline,
     d->cbs = cbs;
     d->cbs_userdata = cbs_userdata;
 
-    ok = sc_thread_create(&d->thread, run, "scrcpy-dis", d);
+    ok = sc_thread_create(&d->thread, run, "tt-dis", d);
     if (!ok) {
         goto error_destroy_cond;
     }

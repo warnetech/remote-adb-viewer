@@ -40,9 +40,9 @@ ninja -C "$MACOS_BUILD_DIR"
 
 # Group intermediate outputs into a 'dist' directory
 mkdir -p "$MACOS_BUILD_DIR/dist"
-cp "$MACOS_BUILD_DIR"/app/scrcpy "$MACOS_BUILD_DIR/dist/"
-cp app/data/scrcpy.png "$MACOS_BUILD_DIR/dist/"
+cp "$MACOS_BUILD_DIR"/app/tainuitech "$MACOS_BUILD_DIR/dist/"
+cp app/data/tainuitech.png "$MACOS_BUILD_DIR/dist/"
 cp app/data/disconnected.png "$MACOS_BUILD_DIR/dist/"
-cp app/scrcpy.1 "$MACOS_BUILD_DIR/dist/"
+cp app/tainuitech.1 "$MACOS_BUILD_DIR/dist/"
 cp LICENSE "$MACOS_BUILD_DIR/dist"
 cp -r "$ADB_INSTALL_DIR"/. "$MACOS_BUILD_DIR/dist/"

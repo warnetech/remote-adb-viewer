@@ -11,7 +11,7 @@ env:
   VERSION: ${{ github.event.inputs.name || github.ref_name }}
 
 jobs:
-  test-scrcpy-server:
+  test-tainuitech-server:
     runs-on: ubuntu-latest
     env:
       GRADLE: gradle  # use native gradle instead of ./gradlew in scripts
@@ -25,10 +25,10 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Test scrcpy-server
+      - name: Test tainuitech-server
         run: release/test_server.sh
 
-  build-scrcpy-server:
+  build-tainuitech-server:
     runs-on: ubuntu-latest
     env:
       GRADLE: gradle  # use native gradle instead of ./gradlew in scripts
@@ -48,10 +48,10 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: scrcpy-server
-          path: release/work/build-server/server/scrcpy-server
+          name: tainuitech-server
+          path: release/work/build-server/server/tainuitech-server
 
-  test-build-scrcpy-server-without-gradle:
+  test-build-tainuitech-server-without-gradle:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -289,17 +289,17 @@ jobs:
 
   package-linux-x86_64:
     needs:
-      - build-scrcpy-server
+      - build-tainuitech-server
       - build-linux-x86_64
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Download scrcpy-server
+      - name: Download tainuitech-server
         uses: actions/download-artifact@v8
         with:
-          name: scrcpy-server
+          name: tainuitech-server
           path: release/work/build-server/server/
 
       - name: Download build-linux-x86_64
@@ -325,17 +325,17 @@ jobs:
 
   package-win32:
     needs:
-      - build-scrcpy-server
+      - build-tainuitech-server
       - build-win32
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Download scrcpy-server
+      - name: Download tainuitech-server
         uses: actions/download-artifact@v8
         with:
-          name: scrcpy-server
+          name: tainuitech-server
           path: release/work/build-server/server/
 
       - name: Download build-win32
@@ -361,17 +361,17 @@ jobs:
 
   package-win64:
     needs:
-      - build-scrcpy-server
+      - build-tainuitech-server
       - build-win64
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Download scrcpy-server
+      - name: Download tainuitech-server
         uses: actions/download-artifact@v8
         with:
-          name: scrcpy-server
+          name: tainuitech-server
           path: release/work/build-server/server/
 
       - name: Download build-win64
@@ -397,17 +397,17 @@ jobs:
 
   package-macos-aarch64:
     needs:
-      - build-scrcpy-server
+      - build-tainuitech-server
       - build-macos-aarch64
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Download scrcpy-server
+      - name: Download tainuitech-server
         uses: actions/download-artifact@v8
         with:
-          name: scrcpy-server
+          name: tainuitech-server
           path: release/work/build-server/server/
 
       - name: Download build-macos-aarch64
@@ -433,17 +433,17 @@ jobs:
 
   package-macos-x86_64:
     needs:
-      - build-scrcpy-server
+      - build-tainuitech-server
       - build-macos-x86_64
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Download scrcpy-server
+      - name: Download tainuitech-server
         uses: actions/download-artifact@v8
         with:
-          name: scrcpy-server
+          name: tainuitech-server
           path: release/work/build-server/server/
 
       - name: Download build-macos
@@ -469,7 +469,7 @@ jobs:
 
   release:
     needs:
-      - build-scrcpy-server
+      - build-tainuitech-server
       - package-linux-x86_64
       - package-win32
       - package-win64
@@ -480,10 +480,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Download scrcpy-server
+      - name: Download tainuitech-server
         uses: actions/download-artifact@v8
         with:
-          name: scrcpy-server
+          name: tainuitech-server
           path: release/work/build-server/server/
 
       - name: Download release-linux-x86_64
@@ -525,5 +525,5 @@ jobs:
       - name: Upload release artifact
         uses: actions/upload-artifact@v7
         with:
-          name: scrcpy-release-${{ env.VERSION }}
+          name: tainuitech-release-${{ env.VERSION }}
           path: release/output

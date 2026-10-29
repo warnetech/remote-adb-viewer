@@ -13,7 +13,7 @@
 /** Downcast frame_sink to sc_v4l2_sink */
 #define DOWNCAST(SINK) container_of(SINK, struct sc_v4l2_sink, frame_sink)
 
-static const AVRational SCRCPY_TIME_BASE = {1, 1000000}; // timestamps in us
+static const AVRational TAINUITECH_TIME_BASE = {1, 1000000}; // timestamps in us
 
 static const AVOutputFormat *
 find_muxer(const char *name) {
@@ -54,7 +54,7 @@ write_header(struct sc_v4l2_sink *vs, const AVPacket *packet) {
 static void
 rescale_packet(struct sc_v4l2_sink *vs, AVPacket *packet) {
     AVStream *ostream = vs->format_ctx->streams[0];
-    av_packet_rescale_ts(packet, SCRCPY_TIME_BASE, ostream->time_base);
+    av_packet_rescale_ts(packet, TAINUITECH_TIME_BASE, ostream->time_base);
 }
 
 static bool
@@ -245,7 +245,7 @@ sc_v4l2_sink_open(struct sc_v4l2_sink *vs, const AVCodecContext *ctx,
     vs->stopped = false;
 
     LOGD("Starting v4l2 thread");
-    ok = sc_thread_create(&vs->thread, run_v4l2_sink, "scrcpy-v4l2", vs);
+    ok = sc_thread_create(&vs->thread, run_v4l2_sink, "tt-v4l2", vs);
     if (!ok) {
         LOGE("Could not start v4l2 thread");
         goto error_av_packet_free;

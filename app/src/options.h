@@ -1,5 +1,5 @@
-#ifndef SCRCPY_OPTIONS_H
-#define SCRCPY_OPTIONS_H
+#ifndef TAINUITECH_OPTIONS_H
+#define TAINUITECH_OPTIONS_H
 
 #include "common.h"
 
@@ -236,7 +236,7 @@ struct sc_port_range {
 
 #define SC_WINDOW_POSITION_UNDEFINED (-0x8000)
 
-struct scrcpy_options {
+struct tainuitech_options {
     const char *serial;
     const char *crop;
     const char *record_filename;
@@ -348,6 +348,6 @@ struct scrcpy_options {
     bool update_terminal_title;
 };
 
-extern const struct scrcpy_options scrcpy_options_default;
+extern const struct tainuitech_options tainuitech_options_default;
 
 #endif

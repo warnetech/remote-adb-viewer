@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# This script generates the scrcpy binary "manually" (without gradle).
+# This script generates the tainuitech binary "manually" (without gradle).
 #
 # Adapt Android platform and build tools versions (via ANDROID_PLATFORM and
 # ANDROID_BUILD_TOOLS environment variables).
@@ -11,8 +11,8 @@
 
 set -e
 
-SCRCPY_DEBUG=false
-SCRCPY_VERSION_NAME=4.1
+TAINUITECH_DEBUG=false
+TAINUITECH_VERSION_NAME=4.1
 
 PLATFORM=${ANDROID_PLATFORM:-36}
 BUILD_TOOLS=${ANDROID_BUILD_TOOLS:-36.0.0}
@@ -23,7 +23,7 @@ BUILD_DIR="$(realpath ${BUILD_DIR:-build_manual})"
 CLASSES_DIR="$BUILD_DIR/classes"
 GEN_DIR="$BUILD_DIR/gen"
 SERVER_DIR=$(dirname "$0")
-SERVER_BINARY=scrcpy-server
+SERVER_BINARY=tainuitech-server
 ANDROID_JAR="$PLATFORM_TOOLS/android.jar"
 ANDROID_AIDL="$PLATFORM_TOOLS/framework.aidl"
 LAMBDA_JAR="$BUILD_TOOLS_DIR/core-lambda-stubs.jar"
@@ -34,14 +34,14 @@ echo "Build dir: $BUILD_DIR"
 
 rm -rf "$CLASSES_DIR" "$GEN_DIR" "$BUILD_DIR/$SERVER_BINARY" classes.dex
 mkdir -p "$CLASSES_DIR"
-mkdir -p "$GEN_DIR/com/genymobile/scrcpy"
+mkdir -p "$GEN_DIR/com/tainuitech"
 
-<< EOF cat > "$GEN_DIR/com/genymobile/scrcpy/BuildConfig.java"
-package com.genymobile.scrcpy;
+<< EOF cat > "$GEN_DIR/com/tainuitech/BuildConfig.java"
+package com.tainuitech;
 
 public final class BuildConfig {
-  public static final boolean DEBUG = $SCRCPY_DEBUG;
-  public static final String VERSION_NAME = "$SCRCPY_VERSION_NAME";
+  public static final boolean DEBUG = $TAINUITECH_DEBUG;
+  public static final String VERSION_NAME = "$TAINUITECH_VERSION_NAME";
 }
 EOF
 
@@ -58,16 +58,16 @@ FAKE_SRC=( \
 )
 
 SRC=( \
-    com/genymobile/scrcpy/*.java \
-    com/genymobile/scrcpy/audio/*.java \
-    com/genymobile/scrcpy/control/*.java \
-    com/genymobile/scrcpy/device/*.java \
-    com/genymobile/scrcpy/display/*.java \
-    com/genymobile/scrcpy/model/*.java \
-    com/genymobile/scrcpy/opengl/*.java \
-    com/genymobile/scrcpy/util/*.java \
-    com/genymobile/scrcpy/video/*.java \
-    com/genymobile/scrcpy/wrappers/*.java \
+    com/tainuitech/*.java \
+    com/tainuitech/audio/*.java \
+    com/tainuitech/control/*.java \
+    com/tainuitech/device/*.java \
+    com/tainuitech/display/*.java \
+    com/tainuitech/model/*.java \
+    com/tainuitech/opengl/*.java \
+    com/tainuitech/util/*.java \
+    com/tainuitech/video/*.java \
+    com/tainuitech/wrappers/*.java \
 )
 
 CLASSES=()

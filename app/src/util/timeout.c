@@ -49,7 +49,7 @@ sc_timeout_start(struct sc_timeout *timeout, sc_tick deadline,
     timeout->cbs = cbs;
     timeout->cbs_userdata = cbs_userdata;
 
-    bool ok = sc_thread_create(&timeout->thread, run_timeout, "scrcpy-timeout",
+    bool ok = sc_thread_create(&timeout->thread, run_timeout, "tt-timeout",
                                timeout);
     if (!ok) {
         LOGE("Timeout: could not start thread");

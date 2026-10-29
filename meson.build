@@ -1,4 +1,4 @@
-project('scrcpy', 'c',
+project('tainuitech', 'c',
         version: '4.1',
         meson_version: '>= 0.49',
         default_options: [

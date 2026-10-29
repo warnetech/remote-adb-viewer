@@ -2,34 +2,10 @@
 
 ## Install
 
-### From the official release
+### From source
 
-Download a static build of the [latest release]:
+TainuiTech has no prebuilt releases yet. Packages and downloads named `scrcpy` install upstream scrcpy, whose server is not compatible with TainuiTech (different Java package and socket names).
 
- - [`scrcpy-linux-x86_64-v4.1.tar.gz`][direct-linux-x86_64] (x86_64)  
-   <sub>SHA-256: `ad56ae8bfeedf41e824945c11dbf55fcb092b3e615b9b486f48a50e30d389635`</sub>
-
-[latest release]: https://github.com/Genymobile/scrcpy/releases/latest
-[direct-linux-x86_64]: https://github.com/Genymobile/scrcpy/releases/download/v4.1/scrcpy-linux-x86_64-v4.1.tar.gz
-
-and extract it.
-
-
-### From your package manager
-
-<a href="https://repology.org/project/scrcpy/versions"><img src="https://repology.org/badge/vertical-allrepos/scrcpy.svg" alt="Packaging status" align="right"></a>
-
-Scrcpy is packaged in several distributions and package managers:
-
- - Debian/Ubuntu: ~~`apt install scrcpy`~~ _(obsolete version)_
- - Arch Linux: `pacman -S scrcpy`
- - Fedora: `dnf copr enable zeno/scrcpy && dnf install scrcpy`
- - Gentoo: `emerge scrcpy`
- - Snap: ~~`snap install scrcpy`~~ _(obsolete version)_
- - … (see [repology](https://repology.org/project/scrcpy/versions))
-
-
-### From an install script
 
 To install the latest release from `master`, follow this simplified process.
 
@@ -43,12 +19,15 @@ sudo apt install ffmpeg libsdl3-0 libusb-1.0-0 adb wget \
                  libswresample-dev libusb-1.0-0-dev libv4l-dev
 ```
 
+The server is built from source, so you also need Java and the Android SDK
+(`ANDROID_SDK_ROOT` set; see [build.md](build.md)).
+
 Then clone the repo and execute the installation script
 ([source](/install_release.sh)):
 
 ```bash
-git clone https://github.com/Genymobile/scrcpy
-cd scrcpy
+git clone https://github.com/warnetech/remote-adb-viewer tainuitech
+cd tainuitech
 ./install_release.sh
 ```
 
@@ -79,16 +58,16 @@ _Make sure that your device meets the [prerequisites](/README.md#prerequisites).
 Once installed, run from a terminal:
 
 ```bash
-scrcpy
+tainuitech
 ```
 
 or with arguments (here to disable audio and record to `file.mkv`):
 
 ```bash
-scrcpy --no-audio --record=file.mkv
+tainuitech --no-audio --record=file.mkv
 ```
 
 Documentation for command line arguments is available:
- - `man scrcpy`
- - `scrcpy --help`
+ - `man tainuitech`
+ - `tainuitech --help`
  - on [github](/README.md)

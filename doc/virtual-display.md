@@ -5,10 +5,10 @@
 To mirror a new virtual display instead of the device screen:
 
 ```bash
-scrcpy --new-display=1920x1080
-scrcpy --new-display=1920x1080/420  # force 420 dpi
-scrcpy --new-display         # use the main display size and density
-scrcpy --new-display=/240    # use the main display size and 240 dpi
+tainuitech --new-display=1920x1080
+tainuitech --new-display=1920x1080/420  # force 420 dpi
+tainuitech --new-display         # use the main display size and density
+tainuitech --new-display=/240    # use the main display size and 240 dpi
 ```
 
 The new virtual display is destroyed on exit.
@@ -21,20 +21,20 @@ To continuously resize the virtual display to match the window size, enable
 
 ```bash
 # Start Android Settings in a window
-scrcpy --new-display=1024x768 --start-app=com.android.settings --flex-display
+tainuitech --new-display=1024x768 --start-app=com.android.settings --flex-display
 
 # -x is equivalent to --flex-display
-scrcpy --new-display=1024x768 --start-app=com.android.settings -x
+tainuitech --new-display=1024x768 --start-app=com.android.settings -x
 
 # By default, the display size/dpi is 1280x960/160
-scrcpy --new-display --start-app=com.android.settings --flex-display
+tainuitech --new-display --start-app=com.android.settings --flex-display
 ```
 
 Use [`--keep-active`][keep-active] to prevent the screen from turning off:
 
 
 ```bash
-scrcpy --new-display --flex-display --keep-active
+tainuitech --new-display --flex-display --keep-active
 ```
 
 [keep-active]: device.md#keep-active
@@ -43,7 +43,7 @@ Increase the [bit rate] (and/or change the [codec]) to maintain good quality
 even with large windows:
 
 ```bash
-scrcpy --new-display -x --video-codec=h265 -b16M
+tainuitech --new-display -x --video-codec=h265 -b16M
 ```
 
 [bit rate]: video.md#bit-rate
@@ -62,14 +62,14 @@ app](device.md#start-android-app).
 For example:
 
 ```bash
-scrcpy --new-display=1920x1080 --start-app=org.videolan.vlc
+tainuitech --new-display=1920x1080 --start-app=org.videolan.vlc
 ```
 
 The app may itself be a launcher. For example, to run the open source [Fossify
 Launcher]:
 
 ```bash
-scrcpy --new-display=1920x1080 --no-vd-system-decorations --start-app=org.fossify.home
+tainuitech --new-display=1920x1080 --no-vd-system-decorations --start-app=org.fossify.home
 ```
 
 [Fossify Launcher]: https://f-droid.org/en/packages/org.fossify.home/
@@ -81,7 +81,7 @@ By default, virtual display system decorations are enabled. To disable them, use
 `--no-vd-system-decorations`:
 
 ```bash
-scrcpy --new-display --no-vd-system-decorations
+tainuitech --new-display --no-vd-system-decorations
 ```
 
 This is useful for some devices which might display a broken UI, or to disable
@@ -98,7 +98,7 @@ By default, when the virtual display is closed, the running apps are destroyed.
 To move them to the main display instead, use:
 
 ```bash
-scrcpy --new-display --no-vd-destroy-content
+tainuitech --new-display --no-vd-destroy-content
 ```
 
 
@@ -109,6 +109,6 @@ By default, the virtual display IME appears on the default display.
 To make it appear on the local display, use `--display-ime-policy=local`:
 
 ```bash
-scrcpy --display-id=1 --display-ime-policy=local
-scrcpy --new-display --display-ime-policy=local
+tainuitech --display-id=1 --display-ime-policy=local
+tainuitech --new-display --display-ime-policy=local
 ```

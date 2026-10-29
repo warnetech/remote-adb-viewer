@@ -47,9 +47,9 @@ ninja -C "$WINXX_BUILD_DIR"
 
 # Group intermediate outputs into a 'dist' directory
 mkdir -p "$WINXX_BUILD_DIR/dist"
-cp "$WINXX_BUILD_DIR"/app/scrcpy.exe "$WINXX_BUILD_DIR/dist/"
-cp app/data/scrcpy-noconsole.vbs "$WINXX_BUILD_DIR/dist/"
-cp app/data/scrcpy.png "$WINXX_BUILD_DIR/dist/"
+cp "$WINXX_BUILD_DIR"/app/tainuitech.exe "$WINXX_BUILD_DIR/dist/"
+cp app/data/tainuitech-noconsole.vbs "$WINXX_BUILD_DIR/dist/"
+cp app/data/tainuitech.png "$WINXX_BUILD_DIR/dist/"
 cp app/data/disconnected.png "$WINXX_BUILD_DIR/dist/"
 cp app/data/open_a_terminal_here.bat "$WINXX_BUILD_DIR/dist/"
 cp LICENSE "$WINXX_BUILD_DIR/dist/LICENSE.txt"

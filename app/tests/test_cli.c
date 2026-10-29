@@ -7,44 +7,44 @@
 #include "options.h"
 
 static void test_flag_version(void) {
-    struct scrcpy_cli_args args = {
-        .opts = scrcpy_options_default,
+    struct tainuitech_cli_args args = {
+        .opts = tainuitech_options_default,
         .help = false,
         .version = false,
     };
 
-    char *argv[] = {"scrcpy", "-v"};
+    char *argv[] = {"tainuitech", "-v"};
 
-    bool ok = scrcpy_parse_args(&args, 2, argv);
+    bool ok = tainuitech_parse_args(&args, 2, argv);
     assert(ok);
     assert(!args.help);
     assert(args.version);
 }
 
 static void test_flag_help(void) {
-    struct scrcpy_cli_args args = {
-        .opts = scrcpy_options_default,
+    struct tainuitech_cli_args args = {
+        .opts = tainuitech_options_default,
         .help = false,
         .version = false,
     };
 
-    char *argv[] = {"scrcpy", "-v"};
+    char *argv[] = {"tainuitech", "-v"};
 
-    bool ok = scrcpy_parse_args(&args, 2, argv);
+    bool ok = tainuitech_parse_args(&args, 2, argv);
     assert(ok);
     assert(!args.help);
     assert(args.version);
 }
 
 static void test_options(void) {
-    struct scrcpy_cli_args args = {
-        .opts = scrcpy_options_default,
+    struct tainuitech_cli_args args = {
+        .opts = tainuitech_options_default,
         .help = false,
         .version = false,
     };
 
     char *argv[] = {
-        "scrcpy",
+        "tainuitech",
         "--always-on-top",
         "--video-bit-rate", "5M",
         "--crop", "100:200:300:400",
@@ -69,10 +69,10 @@ static void test_options(void) {
         "--window-borderless",
     };
 
-    bool ok = scrcpy_parse_args(&args, ARRAY_LEN(argv), argv);
+    bool ok = tainuitech_parse_args(&args, ARRAY_LEN(argv), argv);
     assert(ok);
 
-    const struct scrcpy_options *opts = &args.opts;
+    const struct tainuitech_options *opts = &args.opts;
     assert(opts->always_on_top);
     assert(opts->video_bit_rate == 5000000);
     assert(!strcmp(opts->crop, "100:200:300:400"));
@@ -97,23 +97,23 @@ static void test_options(void) {
 }
 
 static void test_options2(void) {
-    struct scrcpy_cli_args args = {
-        .opts = scrcpy_options_default,
+    struct tainuitech_cli_args args = {
+        .opts = tainuitech_options_default,
         .help = false,
         .version = false,
     };
 
     char *argv[] = {
-        "scrcpy",
+        "tainuitech",
         "--no-control",
         "--no-playback",
         "--record", "file.mp4", // cannot enable --no-playback without recording
     };
 
-    bool ok = scrcpy_parse_args(&args, ARRAY_LEN(argv), argv);
+    bool ok = tainuitech_parse_args(&args, ARRAY_LEN(argv), argv);
     assert(ok);
 
-    const struct scrcpy_options *opts = &args.opts;
+    const struct tainuitech_options *opts = &args.opts;
     assert(!opts->control);
     assert(!opts->video_playback);
     assert(!opts->audio_playback);
