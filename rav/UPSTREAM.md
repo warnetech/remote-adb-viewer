@@ -15,7 +15,9 @@ rav/scripts/port-upstream.sh --pr 7019  # port the commits of an upstream PR
 `rav/UPSTREAM_BASE` holds the last upstream `dev` commit that was ported. `--apply` updates it.
 
 ## When a patch doesn't apply
-`git am` stops on the failing commit. Resolve the conflict, `git add` the files, then `git am --continue`. Use `git am --skip` to drop a commit, for example when upstream merges PR #7019, which is already here. To give up, run `git am --abort`.
+`git am` stops on the failing commit. Resolve the conflict, `git add` the files, then `git am --continue`. Use `git am --skip` to drop a commit, for example when upstream merges PR #7019, which is already here. To give up, run `git am --abort` and `git checkout rav/UPSTREAM_BASE`.
+
+After a conflicted `--apply` completes, commit the updated base: `git commit rav/UPSTREAM_BASE -m "Record upstream scrcpy port base"`.
 
 Expect conflicts on upstream release commits ("Update links to X"): they edit download links and install sections that TainuiTech removed. Keep our version of those sections and update only the version in the README title.
 

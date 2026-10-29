@@ -36,8 +36,9 @@ case "${1:-}" in
     --apply)
         git fetch -q upstream "$UPSTREAM_BRANCH" --no-tags
         target=$(git rev-parse "upstream/$UPSTREAM_BRANCH")
-        port "$base..$target"
+        # Written first so it survives a conflict; commit it after `git am --continue`.
         echo "$target" > rav/UPSTREAM_BASE
+        port "$base..$target"
         git commit -q -m "Record upstream scrcpy port base ${target:0:8}" rav/UPSTREAM_BASE
         ;;
     --pr)
