@@ -109,11 +109,13 @@ The goal was to reuse rather than rebuild. Ratings are for **fit with RAV**.
 - Full rename to TainuiTech: binaries `tainuitech` / `tainuitech-server`, Java package `com.tainuitech`, attribution in `NOTICE`.
 - Upstream port tooling: `rav/scripts/port-upstream.sh` with `rav/scripts/rebrand.py` (see `rav/UPSTREAM.md`).
 
-### Phase 1: Quick win, the `rav` CLI (about 2–4 days)
+### Phase 1: Quick win, the `rav` CLI ✅ built (awaiting on-device acceptance)
+
+Implemented in `rav/` (see `rav/README.md`). All P1 requirements are in, with 35 unit tests against a fake adb. One deliberate change: it calls the `adb` command directly instead of using adbutils, so it has zero dependencies. The acceptance criteria below still need a real phone and a TainuiTech build to confirm.
 
 **Outcome:** from your laptop anywhere, `rav view pixel` opens a working, low-latency window on the phone without touching its physical screen.
 
-Python 3.11+ CLI (`rav/`, packaged with `uv`/`pipx`) that wraps the **TainuiTech** binary and uses **adbutils**.
+Python 3.11+ CLI (`rav/`, packaged with `uv`/`pipx`) that wraps the **TainuiTech** binary and the `adb` command line (standard library only).
 
 | ID | Requirement | Priority |
 |---|---|---|
@@ -180,7 +182,7 @@ Python 3.11+ CLI (`rav/`, packaged with `uv`/`pipx`) that wraps the **TainuiTech
 | Android doze freezes virtual display after about 30 s | `--keep-active` in the headless preset; documented. |
 | WAN latency or bandwidth | WAN preset; WebRTC in Phase 3. |
 | Security: ADB equals full device control | Tailscale/SSH only; Cloudflare Access in front of the web UI; never bind ADB publicly; agent guardrails in Phase 4. |
-| Fork drift from upstream (the full rename means no direct merges) | Port regularly with `port-upstream.sh --apply`, which rewrites upstream patches using the rename rules (59 commits pending today). Keep RAV code in `rav/`. |
+| Fork drift from upstream (the full rename means no direct merges) | Port regularly with `port-upstream.sh --apply`, which rewrites upstream patches using the rename rules (ported up to upstream v5.0.1 on 2026-10-30). Keep RAV code in `rav/`. |
 | Third-party scrcpy clients (Tango, ws-scrcpy, Python clients) expect upstream server names | Make the server class and socket prefix configurable in the Phase 2 client (a small Tango patch or wrapper), or ship an upstream-named server build for web use only. Decide in the Phase 2 spike. |
 | Tango is Chromium-only | Acceptable for a personal tool. Note it in the docs. |
 
